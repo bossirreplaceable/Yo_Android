@@ -1,18 +1,18 @@
-package com.yobo.yo_android
+package com.yobo.yo_android.test_AsyncTask
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.yobo.yo_android.R
 import com.yobo.yo_android.test_AsyncTask.Test_AsyncTask
 import com.yobo.yo_android.test_AsyncTask.Test_My_AsyncTask
 
-class MainActivity : AppCompatActivity() {
+class Test1Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         test1()
-
 
     }
 

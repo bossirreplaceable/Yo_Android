@@ -1,0 +1,59 @@
+package com.yobo.yo_android.test_AsyncTask;
+
+import java.util.Date;
+
+import android.util.Log;
+
+/**
+ * Created by ZhangBoshi
+ * on 2020-04-21
+ */
+public class Test_My_AsyncTask extends AsyncTask<Integer, Integer, String> {
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        log("onPreExecute.准备");
+    }
+
+    @Override
+    protected String doInBackground(Integer... integers) {
+
+        int add = 0;
+        for (Integer i : integers) {
+            publishProgress(i);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            add = add + i;
+            log("doInBackground.add=" + add);
+        }
+
+        String result = "参数之和=" + add;
+
+        return result;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        for (Integer i : values) {
+            log("onProgressUpdate.进度：" + i);
+        }
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        log("onPostExecute.结果：" + s);
+    }
+
+
+    private void log(String msg) {
+        Log.e("Test_AsyncTask",String.format("%tr", new Date()) + ": "
+                + Thread.currentThread().getName() + ": " + msg);
+    }
+}
