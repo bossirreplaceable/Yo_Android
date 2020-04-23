@@ -11,19 +11,16 @@ import androidx.annotation.NonNull;
  * on 2020-04-21
  */
 public class HandlerThread extends Thread {
-    private final int mPriority;
     private int mTid = -1;
     private Looper mLooper;
     private Handler mHandler;
 
     public HandlerThread(String name) {
         super(name);
-        mPriority = Process.THREAD_PRIORITY_DEFAULT;
     }
 
     public HandlerThread(String name, int priority) {
         super(name);
-        mPriority = priority;
     }
 
     protected void onLooperPrepared() {
@@ -37,7 +34,6 @@ public class HandlerThread extends Thread {
             mLooper = Looper.myLooper();
             notifyAll();
         }
-        Process.setThreadPriority(mPriority);
         onLooperPrepared();
         Looper.loop();
         mTid = -1;

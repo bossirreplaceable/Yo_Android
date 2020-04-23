@@ -22,12 +22,13 @@ public class Test_AsyncTask extends AsyncTask<Integer, Integer, String> {
 
         int add = 0;
         for (Integer i : integers) {
+            publishProgress(i);
+
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            publishProgress(i);
 
             add = add + i;
             log("doInBackground.add=" + add);

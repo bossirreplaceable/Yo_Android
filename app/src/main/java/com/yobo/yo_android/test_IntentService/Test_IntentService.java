@@ -1,7 +1,7 @@
 package com.yobo.yo_android.test_IntentService;
 
-import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -12,16 +12,15 @@ import androidx.annotation.Nullable;
 public class Test_IntentService extends IntentService {
 
     /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
+     * Creates an IntentService. Invoked by your subclass's constructor.
      */
-    public Test_IntentService(String name) {
-        super(name);
+    public Test_IntentService() {
+        super("yobo");
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
+        Log.i("Yobo", intent.getStringExtra("yobo"));
     }
 }

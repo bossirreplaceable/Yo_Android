@@ -14,12 +14,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by ZhangBoshi
  * on 2020-04-21
  */
+
 public abstract class AsyncTask<Params, Progress, Result> {
 
     private static final int MESSAGE_POST_RESULT = 0x1;
@@ -29,6 +31,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
     private final FutureTask<Result> mFuture;
     private final Handler mHandler;
 
+    private final AtomicBoolean mTaskInvoked = new AtomicBoolean();
+
     public AsyncTask() {
 
         mHandler = new InternalHandler(Looper.getMainLooper());
@@ -37,7 +41,10 @@ public abstract class AsyncTask<Params, Progress, Result> {
             @Override
             public Result call() {
 
+                mTaskInvoked.set(true);
+
                 Result result = doInBackground(mParams);
+
                 postResult(result);
 
                 return result;
@@ -49,13 +56,20 @@ public abstract class AsyncTask<Params, Progress, Result> {
             protected void done() {
                 super.done();
                 try {
-                    postResult(get());
+                    postResultIfNotInvoked(get());
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         };
 
+    }
+
+    private void postResultIfNotInvoked(Result result) {
+        boolean wasTaskInvoked = mTaskInvoked.get();
+        if (!wasTaskInvoked) {
+            postResult(result);
+        }
     }
 
     private void postResult(Result result) {
@@ -82,21 +96,6 @@ public abstract class AsyncTask<Params, Progress, Result> {
         return this;
     }
 
-    private abstract static class WorkerRunnable<Params, Result> implements Callable<Result> {
-        Params[] mParams;
-    }
-
-    private static class AsyncTaskResult<Data> {
-        final AsyncTask mTask;
-        final Data[] mData;
-
-        @SafeVarargs
-        AsyncTaskResult(AsyncTask task, Data... data) {
-            mTask = task;
-            mData = data;
-        }
-    }
-
     private static class InternalHandler extends Handler {
         InternalHandler(Looper looper) {
             super(looper);
@@ -118,6 +117,21 @@ public abstract class AsyncTask<Params, Progress, Result> {
         }
     }
 
+    private abstract static class WorkerRunnable<Params, Result> implements Callable<Result> {
+        Params[] mParams;
+    }
+
+    private static class AsyncTaskResult<Data> {
+        final AsyncTask mTask;
+        final Data[] mData;
+
+        @SafeVarargs
+        AsyncTaskResult(AsyncTask task, Data... data) {
+            mTask = task;
+            mData = data;
+        }
+    }
+
     private void finish(Result result) {
         onPostExecute(result);
     }
@@ -128,26 +142,27 @@ public abstract class AsyncTask<Params, Progress, Result> {
     }
 
     /**
-     * 运行在主线程中
+     * 运行在主线程中,doInBackground()之前就会被调用，可以做一些准备操作
      */
     protected void onPreExecute() {
     }
 
     /**
-     * 运行在线程池中
+     * 运行在线程池中，执行异步任务的地方
      */
     protected abstract Result doInBackground(Params... params);
 
     /**
-     * 运行在主线程之中
+     * 运行在主线程之中，可以在doInBackground()中调用publishProgress()函数来触发该方法
      */
     protected void onProgressUpdate(Progress... values) {
     }
 
     /**
-     * 运行在主线程之中
+     * 运行在主线程之中，doInBackground()返回的Result结果会被推送这里
      */
     protected void onPostExecute(Result result) {
+
     }
 
     /**
