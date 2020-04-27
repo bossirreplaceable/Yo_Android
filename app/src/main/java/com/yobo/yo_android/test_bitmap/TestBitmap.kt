@@ -148,6 +148,7 @@ class TestBitmap : AppCompatActivity() {
         try {
             val fos = FileOutputStream(imageFile)
 
+
             fos.write(baos.toByteArray())
 
             fos.flush()
