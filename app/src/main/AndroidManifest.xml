@@ -53,7 +53,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".test_View.Test_View">
+        <activity android:name=".test_View.Test_ScrollVIew">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

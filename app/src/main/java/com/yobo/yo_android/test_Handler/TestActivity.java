@@ -1,5 +1,6 @@
 package com.yobo.yo_android.test_Handler;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -136,6 +137,7 @@ public class TestActivity extends AppCompatActivity {
                 return false;
             }
         });
+        ObjectAnimator.ofFloat(text,"translationX",0,100).setDuration(300).start();
 
     }
 }
