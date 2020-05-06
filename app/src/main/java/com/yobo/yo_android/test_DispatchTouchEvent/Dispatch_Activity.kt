@@ -39,6 +39,7 @@ class Dispatch_Activity : AppCompatActivity() {
 
         val son=layoutView.findViewById<TextView>(R.id.test_son)
 
+
         son.text = "你好"
 
     }
