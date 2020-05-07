@@ -12,6 +12,7 @@ class TestThread : Thread() {
     override fun run() {
         super.run()
         println("线程1")
+
     }
 }
 fun main() {

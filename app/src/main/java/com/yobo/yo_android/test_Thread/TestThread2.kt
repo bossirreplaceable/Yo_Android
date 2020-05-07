@@ -1,12 +1,12 @@
 package com.yobo.yo_android.test_Thread
 
-import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 
 /**
  * Created by ZhangBoshi
  * on 2020-05-06
  */
+
 
 
 class TestThread2 {
