@@ -14,6 +14,8 @@ public class MyReentrantLock {
     private Thread lockedBy = null;
     private int lockedCount = 0;
 
+    private volatile boolean isStop=false;
+
     public synchronized void lock() throws InterruptedException {
         Thread thread = Thread.currentThread();
         while (isLocked && !lockedBy.equals(thread)) {

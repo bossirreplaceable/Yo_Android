@@ -44,6 +44,7 @@ class Test {
             mLock.unlock()
         }
     }
+
     val lock = Object()
 
     fun add1() = synchronized(lock) {
@@ -54,7 +55,6 @@ class Test {
 
         lock.notifyAll()
     }
-
 
 
     fun decrease() {
@@ -88,6 +88,21 @@ class Test2 {
 }
 
 
+
+
+
+fun test(){
+
+    var x = 3
+
+    val y = x
+
+    x++
+
+
+
+    print("$x")
+}
 
 
 

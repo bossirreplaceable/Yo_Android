@@ -13,6 +13,19 @@ package com.yobo.yo_android.test_Thread;
 
 public class MyLock {
 
+    private static volatile MyLock instance=null;
+
+    public static MyLock getInstance() {
+        if (instance==null) {
+            synchronized (MyLock.class) {
+                if (instance==null) {
+                     instance=new MyLock();
+                }
+            }
+        }
+        return instance;
+    }
+
     private boolean isLocked = false;
 
     public synchronized void lock()
