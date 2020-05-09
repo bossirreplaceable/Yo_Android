@@ -39,6 +39,10 @@ class Dispatch_Activity : AppCompatActivity() {
 
         val son=layoutView.findViewById<TextView>(R.id.test_son)
 
+        son.setOnClickListener {
+            logMsg("setOnClickListener---son","点击了son")
+
+        }
 
         son.text = "你好"
 
